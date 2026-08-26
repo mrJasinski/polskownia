@@ -2,7 +2,7 @@ package com.polskownia.article.dto;
 
 import java.time.LocalDateTime;
 
-class ArticleWriteModel
+public class ArticleWriteModel
 {
     private String title;
     private String articleCycle;
@@ -29,5 +29,35 @@ class ArticleWriteModel
         this.author = author;
         this.summary = summary;
         this.articleText = articleText;
+    }
+
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public String getArticleCycle()
+    {
+        return articleCycle;
+    }
+
+    public LocalDateTime getPublishDate()
+    {
+        return publishDate;
+    }
+
+    public String getAuthor()
+    {
+        return author;
+    }
+
+    public String getSummary()
+    {
+        return summary;
+    }
+
+    public String getArticleText()
+    {
+        return articleText;
     }
 }

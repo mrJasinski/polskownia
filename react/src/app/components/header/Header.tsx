@@ -10,6 +10,7 @@ function Header({ title = "Polskownia" }: HeaderProps) {
       <nav>
         <Link to = "/" >Strona główna</Link>
         <Link to = "/articles" >Artykuły</Link>
+        <Link to = "/contact" >Kontakt</Link>
       </nav>
     </header>
   );

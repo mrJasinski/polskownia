@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -47,7 +48,7 @@ class SecurityConfig
                     {
                         var config = new CorsConfiguration();
 
-                        config.setAllowedOrigins(List.of("http://localhost:5173"));
+                        config.setAllowedOrigins(List.of("http://localhost:5173", "http://127.0.0.1:5173"));
                         config.setAllowedMethods(Collections.singletonList("*"));
                         config.setAllowCredentials(true);
                         config.setAllowedHeaders(Collections.singletonList("*"));
@@ -59,10 +60,11 @@ class SecurityConfig
                 }))
                 .csrf(csrf -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers(
                                 "/register", "/authenticate", "/dashboard"
-                                , "/createCourse", "/myCourses/**", "/allCourses"
-                                , "/shop/**", "/getShopItemCategories", "/addShopItem/**", "/shopItem/**", "/getDiscountCodes"
-                                , "/sendMail", "/students", "/generateDiscountCode", "/getDiscount"
-                                ,"/restorePassword", "/changePassword", "/downloadFile/**", "/fileManager", "/uploadFile**", "/getFiles"
+//                                , "/createCourse", "/myCourses/**", "/allCourses"
+                                , "/shop/**"
+//                                , "/getShopItemCategories", "/addShopItem/**", "/shopItem/**", "/getDiscountCodes"
+//                                , "/sendMail", "/students", "/generateDiscountCode", "/getDiscount"
+//                                ,"/restorePassword", "/changePassword", "/downloadFile/**", "/fileManager", "/uploadFile**", "/getFiles"
                                 , "/articles/**"
                         )
 //                        , "/addShopItem/**", "/getShopItem/**")
@@ -71,18 +73,19 @@ class SecurityConfig
                 .addFilterBefore(this.jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(
+                                "/dashboard"
+                                , "/articles/add" , "/articles/dashboard"
+//                                , "/addShopItem/**"
+//                                , "/getDiscountCodes", "/students", "/generateDiscountCode", "/changePassword", "/downloadFile/**", "/fileManager", "/uploadFile**"
+//                                , "/getFiles", "/createOrder", "/orders", "/myShelf", "/allOrders", "/order/**"
+//                                , "/sendCustomerData", "/getCustomerDataList", "/getDefaultCustomerData"
+                        ).authenticated()
+                        .requestMatchers(
                                 "/register", "/authenticate"
                                 , "/shop/**"
-                                , "/sendMail"
+//                                , "/sendMail"
                                 , "/articles/**"
-                        ).permitAll()
-                        .requestMatchers(
-                                "/dashboard"
-                                , "/addShopItem/**"
-                                , "/getDiscountCodes", "/students", "/generateDiscountCode", "/changePassword", "/downloadFile/**", "/fileManager", "/uploadFile**"
-                                , "/getFiles", "/createOrder", "/orders", "/myShelf", "/allOrders", "/order/**"
-                                , "/sendCustomerData", "/getCustomerDataList", "/getDefaultCustomerData"
-                        ).authenticated())
+                        ).permitAll())
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();

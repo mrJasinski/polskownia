@@ -1,16 +1,19 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import MainLayout from "./app/layouts/MainLayout";
 import Home from "./app/pages/home/Home";
 import Articles from "./app/pages/article/Articles";
+import Header from "./app/components/header/Header";
+import Contact from "./app/pages/contact/Contact";
 
 function App() {
   return (
     <BrowserRouter>
+
+      <Header/>
+
       <Routes>
-        <Route element = { <MainLayout /> }>
           <Route path="/" element={<Home />} />
           <Route path="/articles" element={<Articles />} />
-        </Route>
+          <Route path="/contact" element={<Contact />} />
       </Routes>
     </BrowserRouter>
   );

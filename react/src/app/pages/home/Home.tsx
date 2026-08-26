@@ -1,4 +1,5 @@
-function Home() {
+function Home() 
+{
   return <h1>Strona główna</h1>;
 }
 

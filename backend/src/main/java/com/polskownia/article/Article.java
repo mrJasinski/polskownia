@@ -1,5 +1,7 @@
 package com.polskownia.article;
 
+import com.polskownia.article.dto.ArticleReadModel;
+import com.polskownia.article.dto.ArticleShortReadModel;
 import jakarta.persistence.*;
 
 import java.text.Normalizer;
@@ -30,16 +32,27 @@ class Article
             , final LocalDateTime publishDate
             , final String author
             , final String summary
-            , final String articleText
-            , final String logoReference)
+            , final String articleText)
     {
         this.title = title;
         this.articleLink = covertTitleToLink(title);
         this.articleCycle = articleCycle;
-        this.publishDate = publishDate;
+        this.publishDate = publishDate; //TODO wystarczy data i ew godz:min
         this.author = author;
         this.summary = summary;
         this.articleText = articleText;
+    }
+
+    Article(
+            final String title
+            , final String articleCycle
+            , final LocalDateTime publishDate
+            , final String author
+            , final String summary
+            , final String articleText
+            , final String logoReference)
+    {
+        this(title, articleCycle, publishDate, author, summary, articleText);
     }
 
     String covertTitleToLink(final String title)
@@ -59,4 +72,29 @@ class Article
 
         return result.toLowerCase();
     }
+
+    ArticleShortReadModel toShortReadModel()
+    {
+        return new ArticleShortReadModel(
+                this.publishDate
+                , this.articleCycle
+                , this.title
+                , this.articleLink
+                , this.author
+                , this.summary
+        );
+    }
+
+    ArticleReadModel toReadModel()
+    {
+        return new ArticleReadModel(
+                this.title
+                , this.articleLink
+                , this.publishDate
+                , this.articleCycle
+                , this.author
+                , this.articleText
+        );
+    }
+
 }
