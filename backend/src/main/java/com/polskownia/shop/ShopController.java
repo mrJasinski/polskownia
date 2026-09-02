@@ -2,23 +2,44 @@ package com.polskownia.shop;
 
 import com.polskownia.shop.dto.ShopItemWriteModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
+
 
 @RestController
+@RequestMapping("/shop")
 class ShopController
 {
-    @GetMapping("/shop")
+    private final ShopService shopService;
+
+    ShopController(final ShopService shopService)
+    {
+        this.shopService = shopService;
+    }
+
+    @GetMapping
     ResponseEntity<?> getShop()
     {
         return ResponseEntity.ok("shop!");
     }
 
-    @PostMapping
+    @GetMapping("/items")
+    ResponseEntity<?> getShopItems(Pageable pageable)
+    {
+        return ResponseEntity.ok(this.shopService.getShopItemsAsShortReadModel(pageable));
+    }
+
+    @GetMapping("/{refNumber}")
+    ResponseEntity<?> getShopItemByRefNumer(@PathVariable String refNumber)
+    {
+        return ResponseEntity.ok(this.shopService.getShopItemByRefNumberAsReadModel(refNumber));
+    }
+
+    @PostMapping("/add")
     ResponseEntity<?> addShopItem(@RequestBody ShopItemWriteModel toSave)
     {
         return ResponseEntity.ok("shop item added!");
     }
+
+
 }
