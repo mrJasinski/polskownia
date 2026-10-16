@@ -66,6 +66,8 @@ class SecurityConfig
 //                                , "/sendMail", "/students", "/generateDiscountCode", "/getDiscount"
 //                                ,"/restorePassword", "/changePassword", "/downloadFile/**", "/fileManager", "/uploadFile**", "/getFiles"
                                 , "/articles/**"
+                                , "/mailTest"
+                                ,"/test/**"
                         )
 //                        , "/addShopItem/**", "/getShopItem/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
@@ -85,6 +87,8 @@ class SecurityConfig
                                 , "/shop/**"
 //                                , "/sendMail"
                                 , "/articles/**"
+                                , "/mailTest"
+                                ,"/test/**"
                         ).permitAll())
                 .httpBasic(Customizer.withDefaults());
 

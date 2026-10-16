@@ -10,6 +10,8 @@ public record ShopItemShortReadModel(
         , String shortDescription
         , Category category
         , Level level
+
+//        określenie dostępności?
 )
 {
 }

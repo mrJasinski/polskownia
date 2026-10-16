@@ -3,6 +3,7 @@ import Home from "./app/pages/home/Home";
 import Articles from "./app/pages/article/Articles";
 import Header from "./app/components/header/Header";
 import Contact from "./app/pages/contact/Contact";
+import Shop from "./app/pages/shop/Shop";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
 
       <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/shop" element={<Shop />} />
           <Route path="/articles" element={<Articles />} />
           <Route path="/contact" element={<Contact />} />
       </Routes>
