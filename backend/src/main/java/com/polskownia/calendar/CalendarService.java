@@ -1,67 +1,108 @@
 package com.polskownia.calendar;
 
+import com.polskownia.calendar.dto.AppointmentWriteModel;
 import com.polskownia.calendar.dto.SimpleAppointment;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 class CalendarService
 {
-    void getPossibleTerms(final LocalDate startDate, final LocalDate endDate, final SimpleAppointment toAppoint)
-    {
-        var workdays = getWorkDaysByDates(startDate, endDate);
+    private final WorkdayRepository workdayRepo;
+    private final AppointmentRepository appointmentRepo;
+    private final CustomerRepository customerRepo;
 
-//                metoda wypluwa dostępne terminy danego dnia
-        this.getAvailableTerms(toAppoint);
+    CalendarService(final WorkdayRepository workdayRepo, final AppointmentRepository appointmentRepo, final CustomerRepository customerRepo)
+    {
+        this.workdayRepo = workdayRepo;
+        this.appointmentRepo = appointmentRepo;
+        this.customerRepo = customerRepo;
     }
 
-    List<WorkDay> getWorkDaysByDates(final LocalDate startDate, final LocalDate endDate)
+//    Map<LocalDate, List<LocalTime>> getAvailableSlotsByDates(final LocalDate startDate, final LocalDate endDate, final SimpleAppointment toAppoint)
+//    TODO uproszczona wersja dla testów
+    Map<LocalDate, List<LocalTime>> getAvailableSlotsByDates(final LocalDate startDate, final LocalDate endDate, final int durationMinutes)
     {
-//        TODO
-        return null;
-    }
+//        gdzie jest zapisywany/podawany step?
+        var stepMinutes = 30;
 
+        var result = new HashMap<LocalDate, List<LocalTime>>();
 
+        var workdays = this.workdayRepo.findByDates(startDate, endDate);
 
-    void getAvailableTerms(final SimpleAppointment toAppoint)
-    {
-        var days = new ArrayList<WorkDay>();
-
-        for (WorkDay day : days)
+        for (Workday workday : workdays)
         {
-            if (!day.hasAppointments())
+            var slots = new ArrayList<LocalTime>();
+
+            if (workday.hasAppointments())
             {
-//                prosta iteracja przez cały dzień tak, aby ostatni termin kończył się równo z dniem pracy
+                for (var startAt = workday.getWorkTimeStart(); !startAt.plusMinutes(durationMinutes).isAfter(workday.getWorkTimeEnd()); startAt = startAt.plusMinutes(stepMinutes))
+                {
+                    var finalStartAt = startAt;
+                    var endAt = startAt.plusMinutes(durationMinutes);
+
+                    var occupied = workday.getAppointments()
+                            .stream()
+                            .anyMatch(a -> finalStartAt.isBefore(a.getEndTime()) && endAt.isAfter(a.getStartTime()));
+
+                    if (!occupied)
+                        slots.add(startAt);
+                }
             }
             else
             {
-                getAvailableSlots(day, toAppoint);
+                var lastStart = workday.getWorkTimeEnd().minusMinutes(durationMinutes);
+
+                for (var startAt = workday.getWorkTimeStart(); !startAt.isAfter(lastStart); startAt = startAt.plusMinutes(stepMinutes))
+                    slots.add(startAt);
             }
+
+            result.put(workday.getWorkdayDate(), slots);
         }
+
+        return result;
     }
 
-    void getAvailableSlots(final WorkDay day, final SimpleAppointment toAppoint)
+    void addAppointment(final AppointmentWriteModel toAdd)
     {
-        var stepMinutes = 15;
+        var workday = getWorkdayByDate(toAdd.getDate());
 
-        var slots = new ArrayList<LocalTime>();
+        var customerDTO = toAdd.getCustomer();
 
-        for (LocalTime startAt = day.getWorkTimeStart(); !startAt.plusMinutes(toAppoint.getDurationMinutes()).isAfter(day.getWorkTimeEnd()); startAt = startAt.plusMinutes(stepMinutes))
-        {
-            var finalStartAt = startAt;
-            var endAt = startAt.plusMinutes(toAppoint.getDurationMinutes());
+        var customer = this.customerRepo.save(
+                new Customer(
+                    customerDTO.getFirstName()
+                    , customerDTO.getLastName()
+                    , customerDTO.getEmail()
+                    , customerDTO.getPhone()
+                ));
 
-            var occupied = day.getAppointments()
-                    .stream()
-                    .anyMatch(a -> finalStartAt.isBefore(a.getEndTime()) && endAt.isAfter(a.getStartTime()));
-
-            if (!occupied)
-                slots.add(startAt);
-        }
+        this.appointmentRepo.save(
+                new Appointment(
+                    toAdd.getType()
+                    , toAdd.getStartTime()
+                    , toAdd.getStartTime().plusMinutes(toAdd.getDurationMinutes())
+                    , toAdd.getPrice()
+                    , workday
+                    , customer
+                ));
     }
+
+    Workday getWorkdayByDate(final LocalDate date)
+    {
+        return this.workdayRepo.findByDate(date)
+                .orElseThrow(() -> new NoSuchElementException("No workday with given date!"));
+    }
+
+//    Workday createWorkdayByDate(final LocalDate date)
+//    {
+//        return this.workdayRepo.save(
+//                new Workday()
+//        );
+//    }
+
 }
 

@@ -67,7 +67,9 @@ class SecurityConfig
 //                                ,"/restorePassword", "/changePassword", "/downloadFile/**", "/fileManager", "/uploadFile**", "/getFiles"
                                 , "/articles/**"
                                 , "/mailTest"
-                                ,"/test/**"
+                                , "/test/**"
+                                , "/calendar**"
+                                , "/g-calendar/**", "/error"
                         )
 //                        , "/addShopItem/**", "/getShopItem/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
@@ -89,6 +91,9 @@ class SecurityConfig
                                 , "/articles/**"
                                 , "/mailTest"
                                 ,"/test/**"
+//                                TODO dla testów noAuth
+                                , "/calendar**"
+                                , "/g-calendar/**", "/error"
                         ).permitAll())
                 .httpBasic(Customizer.withDefaults());
 

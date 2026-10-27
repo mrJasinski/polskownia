@@ -13,6 +13,9 @@ function Header({ title = "Polskownia" }: HeaderProps) {
         <Link to = "/shop" >Sklep</Link>
         <Link to = "/articles" >Artykuły</Link>
         <Link to = "/contact" >Kontakt</Link>
+        <Link to = "/calendar" >Kalendarz</Link>
+        <Link to = "/g-calendar" >Kalendarz google</Link>
+        <Link to = "/appointments" >Umów spotkanie</Link>
       </nav>
     </header>
   );
