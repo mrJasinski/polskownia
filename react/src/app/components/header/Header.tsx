@@ -1,9 +1,13 @@
+import { useAuth } from "../../services/AuthContext";
 import "./Header.css";
 import { Link } from "react-router-dom" ;
 
 type HeaderProps = { title? : string; };
 
-function Header({ title = "Polskownia" }: HeaderProps) {
+function Header({ title = "Polskownia" }: HeaderProps) 
+{
+  const { isLogged } = useAuth();
+
   return (
     <header>
       <h2>{title}</h2>
@@ -16,6 +20,8 @@ function Header({ title = "Polskownia" }: HeaderProps) {
         <Link to = "/calendar" >Kalendarz</Link>
         <Link to = "/g-calendar" >Kalendarz google</Link>
         <Link to = "/appointments" >Umów spotkanie</Link>
+        <Link to = {isLogged ? "/dashboard" : "/auth"} >Konto</Link> ||| 
+        <button>Wyloguj</button>
       </nav>
     </header>
   );

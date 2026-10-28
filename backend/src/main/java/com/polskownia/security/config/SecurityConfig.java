@@ -59,7 +59,7 @@ class SecurityConfig
                     }
                 }))
                 .csrf(csrf -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers(
-                                "/register", "/authenticate", "/dashboard"
+                                "/register", "/auth", "/dashboard"
 //                                , "/createCourse", "/myCourses/**", "/allCourses"
                                 , "/shop/**"
 //                                , "/getShopItemCategories", "/addShopItem/**", "/shopItem/**", "/getDiscountCodes"
@@ -85,7 +85,7 @@ class SecurityConfig
 //                                , "/sendCustomerData", "/getCustomerDataList", "/getDefaultCustomerData"
                         ).authenticated()
                         .requestMatchers(
-                                "/register", "/authenticate"
+                                "/register", "/auth"
                                 , "/shop/**"
 //                                , "/sendMail"
                                 , "/articles/**"
