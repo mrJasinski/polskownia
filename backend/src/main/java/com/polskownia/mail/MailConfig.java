@@ -1,6 +1,7 @@
 package com.polskownia.mail;
 
 import com.polskownia.utils.Utils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.SimpleMailMessage;
@@ -10,6 +11,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 @Configuration
 class MailConfig
 {
+    @Value("${GMAIL_PASSWD}")
+    private String passwd;
+
     @Bean
     JavaMailSender getJavaMailSender()
     {
@@ -20,7 +24,7 @@ class MailConfig
 //        TODO dane konta - aby nie były tak jawne
 
         mailSender.setUsername(Utils.APP_MAIL);
-        mailSender.setPassword("spclbkqewipnpkzj");
+        mailSender.setPassword(passwd);
 
         var properties = mailSender.getJavaMailProperties();
         properties.put("mail.transport.protocol", "smtp");

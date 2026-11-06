@@ -29,7 +29,8 @@ public class JwtService
         this.exp = exp;
     }
 
-    public String extractUsername(String token) {
+    public String extractUsername(String token)
+    {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -93,6 +94,9 @@ public class JwtService
 
         if (authHeader == null || !authHeader.startsWith("Bearer "))
             throw new IllegalArgumentException("Invalid token!");
+
+        System.out.println("getToken");
+        System.out.println(authHeader.substring(7));
 
         return authHeader.substring(7);
     }

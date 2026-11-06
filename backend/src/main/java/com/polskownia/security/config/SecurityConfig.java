@@ -70,6 +70,7 @@ class SecurityConfig
                                 , "/test/**"
                                 , "/calendar**"
                                 , "/g-calendar/**", "/error"
+                                , "/api/gmail/**"
                         )
 //                        , "/addShopItem/**", "/getShopItem/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
@@ -79,6 +80,7 @@ class SecurityConfig
                         .requestMatchers(
                                 "/dashboard"
                                 , "/articles/add" , "/articles/dashboard"
+                                , "/api/gmail/**"
 //                                , "/addShopItem/**"
 //                                , "/getDiscountCodes", "/students", "/generateDiscountCode", "/changePassword", "/downloadFile/**", "/fileManager", "/uploadFile**"
 //                                , "/getFiles", "/createOrder", "/orders", "/myShelf", "/allOrders", "/order/**"

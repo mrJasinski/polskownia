@@ -32,10 +32,12 @@ class MailService
     void sendMail()
     {
         var mail = "abakan@ymail.com";
-        var subject = "Mail testowy!";
+        var subject = "To na pewno nie jest phishing!";
 
         var text = """
-                To jest mail testowy systemu strony internetowej Żoneczki!
+                Cześć!
+                
+                jestem albańskim wirusem komputerowym. Ze względu na niski poziom rozwoju mojego kraju nie potrafię wyrządzić krzywdy Twojemu sprzętowi. Proszę skasuj samodzielnie ważne pliki systemowe i przekaż tę wiadomość znajomemu. Dziękuję za współpracę!
                 """;
 
         sendSimpleMessage(mail, subject, text);
