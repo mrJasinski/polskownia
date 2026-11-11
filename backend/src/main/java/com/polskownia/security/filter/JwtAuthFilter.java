@@ -36,7 +36,7 @@ public class JwtAuthFilter extends OncePerRequestFilter
 
         var authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null)
+        if (authHeader != null && authHeader.startsWith("Bearer"))
         {
             token = this.jwtService.getToken(request);
             email = this.jwtService.getUserEmail(request);

@@ -21,8 +21,6 @@ class MailConfig
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-//        TODO dane konta - aby nie były tak jawne
-
         mailSender.setUsername(Utils.APP_MAIL);
         mailSender.setPassword(passwd);
 

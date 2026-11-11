@@ -71,6 +71,9 @@ class SecurityConfig
                                 , "/calendar**"
                                 , "/g-calendar/**", "/error"
                                 , "/api/gmail/**"
+                                , "/addCourse"
+                                , "/oauth2/**"
+                                , "/courses/**"
                         )
 //                        , "/addShopItem/**", "/getShopItem/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
@@ -96,6 +99,9 @@ class SecurityConfig
 //                                TODO dla testów noAuth
                                 , "/calendar**"
                                 , "/g-calendar/**", "/error"
+                                , "/addCourse"
+                                , "/oauth2/**"
+                                , "/courses/**"
                         ).permitAll())
                 .httpBasic(Customizer.withDefaults());
 

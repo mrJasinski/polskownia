@@ -1,12 +1,13 @@
 package com.polskownia.mail;
 
+import com.google.api.services.calendar.model.Event;
 import com.polskownia.utils.Utils;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
-class MailService
+public class MailService
 {
     private final JavaMailSender mailSender;
 
@@ -39,6 +40,20 @@ class MailService
                 
                 jestem albańskim wirusem komputerowym. Ze względu na niski poziom rozwoju mojego kraju nie potrafię wyrządzić krzywdy Twojemu sprzętowi. Proszę skasuj samodzielnie ważne pliki systemowe i przekaż tę wiadomość znajomemu. Dziękuję za współpracę!
                 """;
+
+        sendSimpleMessage(mail, subject, text);
+    }
+
+    public void sendEventMail(final Event event)
+    {
+        var mail = event.getAttendees().get(0).getEmail();
+        var subject = event.getDescription();
+
+        var text = String.format("""
+                Cześć!
+                
+                link do spotkania to %s
+                """, event.getHangoutLink());
 
         sendSimpleMessage(mail, subject, text);
     }

@@ -95,9 +95,6 @@ public class JwtService
         if (authHeader == null || !authHeader.startsWith("Bearer "))
             throw new IllegalArgumentException("Invalid token!");
 
-        System.out.println("getToken");
-        System.out.println(authHeader.substring(7));
-
         return authHeader.substring(7);
     }
 

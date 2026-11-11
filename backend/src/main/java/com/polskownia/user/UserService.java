@@ -1,6 +1,7 @@
 package com.polskownia.user;
 
 import com.polskownia.user.dto.UserDTO;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -24,5 +25,11 @@ public class UserService
     public UserDTO getUserByEmailAsDto(final String email)
     {
         return getUserByEmail(email).toDto();
+    }
+
+    public UserRole getUserRoleByMail(final String mail)
+    {
+        return this.userRepo.findRoleByEmail(mail)
+                .orElseThrow(() -> new NoSuchElementException("User role with given email not found!"));
     }
 }
