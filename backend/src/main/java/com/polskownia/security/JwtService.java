@@ -1,5 +1,7 @@
 package com.polskownia.security;
 
+import com.polskownia.user.User;
+import com.polskownia.user.UserService;
 import com.polskownia.user.dto.UserDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -22,14 +24,17 @@ public class JwtService
     private final String secret;
     private final int exp;
 
+    private final UserService userService;
 
-    JwtService(@Value("${jwt.secret}") final String secret, @Value("${jwt.exp}") final int exp)
+    JwtService(@Value("${jwt.secret}") final String secret, @Value("${jwt.exp}") final int exp, final UserService userService)
     {
         this.secret = secret;
         this.exp = exp;
+        this.userService = userService;
     }
 
-    public String extractUsername(String token) {
+    public String extractUsername(String token)
+    {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -44,6 +49,7 @@ public class JwtService
     }
     private Claims extractAllClaims(String token)
     {
+//        TODO aktualizacja wg kursu
         return Jwts
                 .parser()
                 .setSigningKey(getSignKey())
@@ -65,6 +71,7 @@ public class JwtService
 
     private String createToken(Map<String, Object> claims, String subject)
     {
+//        TODO aktualizacja wg kursu
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
@@ -101,4 +108,11 @@ public class JwtService
     {
         return extractUsername(getToken(request));
     }
+
+    public User getUserFromToken(HttpServletRequest request)
+    {
+        return this.userService.getUserByEmail(getUserEmail(request));
+    }
+
+
 }

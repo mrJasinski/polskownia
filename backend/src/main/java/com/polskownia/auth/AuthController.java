@@ -28,7 +28,7 @@ class AuthController
 //
 //    }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/auth")
     ResponseEntity<?> authenticateUser(@RequestBody UserDTO toAuthenticate)
     {
         var userDetails = this.authManager.authenticate(new UsernamePasswordAuthenticationToken(toAuthenticate.getEmail(), toAuthenticate.getPassword()));

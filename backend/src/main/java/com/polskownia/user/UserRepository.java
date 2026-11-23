@@ -7,4 +7,6 @@ interface UserRepository
     User save(User toSave);
 
     Optional<User> findByEmail(String mail);
+
+    Optional<UserRole> findRoleByEmail(String mail);
 }

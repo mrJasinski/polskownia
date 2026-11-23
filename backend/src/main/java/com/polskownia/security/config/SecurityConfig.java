@@ -19,6 +19,7 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,8 +40,7 @@ class SecurityConfig
         var requestHandler = new CsrfTokenRequestAttributeHandler();
         requestHandler.setCsrfRequestAttributeName("_csrf");
 
-        http.securityContext(context -> context.requireExplicitSave(false))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource()
                 {
                     @Override
@@ -52,14 +52,14 @@ class SecurityConfig
                         config.setAllowedMethods(Collections.singletonList("*"));
                         config.setAllowCredentials(true);
                         config.setAllowedHeaders(Collections.singletonList("*"));
-                        config.setExposedHeaders(Collections.singletonList(HttpHeaders.CONTENT_DISPOSITION));
+                        config.setExposedHeaders(Arrays.asList("Authorization"));
                         config.setMaxAge(3600L);
 
                         return config;
                     }
                 }))
                 .csrf(csrf -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers(
-                                "/register", "/authenticate", "/dashboard"
+                                "/register", "/auth", "/dashboard"
 //                                , "/createCourse", "/myCourses/**", "/allCourses"
                                 , "/shop/**"
 //                                , "/getShopItemCategories", "/addShopItem/**", "/shopItem/**", "/getDiscountCodes"
@@ -67,7 +67,13 @@ class SecurityConfig
 //                                ,"/restorePassword", "/changePassword", "/downloadFile/**", "/fileManager", "/uploadFile**", "/getFiles"
                                 , "/articles/**"
                                 , "/mailTest"
-                                ,"/test/**"
+                                , "/test/**"
+                                , "/calendar**"
+                                , "/g-calendar/**", "/error"
+                                , "/api/gmail/**"
+                                , "/addCourse"
+                                , "/oauth2/**"
+                                , "/courses/**"
                         )
 //                        , "/addShopItem/**", "/getShopItem/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
@@ -77,18 +83,25 @@ class SecurityConfig
                         .requestMatchers(
                                 "/dashboard"
                                 , "/articles/add" , "/articles/dashboard"
+                                , "/api/gmail/**"
 //                                , "/addShopItem/**"
 //                                , "/getDiscountCodes", "/students", "/generateDiscountCode", "/changePassword", "/downloadFile/**", "/fileManager", "/uploadFile**"
 //                                , "/getFiles", "/createOrder", "/orders", "/myShelf", "/allOrders", "/order/**"
 //                                , "/sendCustomerData", "/getCustomerDataList", "/getDefaultCustomerData"
                         ).authenticated()
                         .requestMatchers(
-                                "/register", "/authenticate"
+                                "/register", "/auth"
                                 , "/shop/**"
 //                                , "/sendMail"
                                 , "/articles/**"
                                 , "/mailTest"
                                 ,"/test/**"
+//                                TODO dla testów noAuth
+                                , "/calendar**"
+                                , "/g-calendar/**", "/error"
+                                , "/addCourse"
+                                , "/oauth2/**"
+                                , "/courses/**"
                         ).permitAll())
                 .httpBasic(Customizer.withDefaults());
 

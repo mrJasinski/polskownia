@@ -36,7 +36,7 @@ public class JwtAuthFilter extends OncePerRequestFilter
 
         var authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null)
+        if (authHeader != null && authHeader.startsWith("Bearer"))
         {
             token = this.jwtService.getToken(request);
             email = this.jwtService.getUserEmail(request);
@@ -59,4 +59,10 @@ public class JwtAuthFilter extends OncePerRequestFilter
 
         filterChain.doFilter(request, response);
     }
+
+//    @Override
+//    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException
+//    {
+//        return !request.getServletPath().equals("/auth");
+//    }
 }

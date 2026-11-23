@@ -5,19 +5,18 @@ import type { Page } from "../../models/Page";
 
 function Articles() 
 {
-  
-    const [page, setPage] = useState<Page<ArticleShortReadModel> | null > (null);
+      const [page, setPage] = useState<Page<ArticleShortReadModel> | null > (null);
 
-    useEffect(() => {
-        getArticles()
-            .then(setPage)
-            .catch(error => { console.error("ERROR:", error); });
-    }, []);
+    useEffect(() => 
+        {
+            getArticles()
+                .then(setPage)
+                .catch(error => { console.error("ERROR:", error); });
+        }, []);
 
-    if (!page) {
+    if (!page)
         return <div>Ładowanie...</div>;
-    }
-
+    
     return (
         <div>
             <h1>Artykuły</h1>

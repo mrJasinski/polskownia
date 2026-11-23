@@ -1,4 +1,4 @@
-package com.polskownia.mail;
+package com.polskownia.mail.config;
 
 import com.polskownia.utils.Utils;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,8 +20,6 @@ class MailConfig
         var mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
-
-//        TODO dane konta - aby nie były tak jawne
 
         mailSender.setUsername(Utils.APP_MAIL);
         mailSender.setPassword(passwd);
