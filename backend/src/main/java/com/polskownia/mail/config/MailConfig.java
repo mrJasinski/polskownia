@@ -1,4 +1,4 @@
-package com.polskownia.mail;
+package com.polskownia.mail.config;
 
 import com.polskownia.utils.Utils;
 import org.springframework.beans.factory.annotation.Value;
