@@ -27,6 +27,8 @@ import java.util.List;
 @Configuration
 class SecurityConfig
 {
+//    TODO dodać nowe filtry oraz wynieść ich części wspólne do jwt service
+
     private final JwtAuthFilter jwtAuthFilter;
 
     SecurityConfig(final JwtAuthFilter jwtAuthFilter)
@@ -60,11 +62,7 @@ class SecurityConfig
                 }))
                 .csrf(csrf -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers(
                                 "/register", "/auth", "/dashboard"
-//                                , "/createCourse", "/myCourses/**", "/allCourses"
                                 , "/shop/**"
-//                                , "/getShopItemCategories", "/addShopItem/**", "/shopItem/**", "/getDiscountCodes"
-//                                , "/sendMail", "/students", "/generateDiscountCode", "/getDiscount"
-//                                ,"/restorePassword", "/changePassword", "/downloadFile/**", "/fileManager", "/uploadFile**", "/getFiles"
                                 , "/articles/**"
                                 , "/mailTest"
                                 , "/test/**"
@@ -75,7 +73,6 @@ class SecurityConfig
                                 , "/oauth2/**"
                                 , "/courses/**"
                         )
-//                        , "/addShopItem/**", "/getShopItem/**")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(this.jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -84,15 +81,10 @@ class SecurityConfig
                                 "/dashboard"
                                 , "/articles/add" , "/articles/dashboard"
                                 , "/api/gmail/**"
-//                                , "/addShopItem/**"
-//                                , "/getDiscountCodes", "/students", "/generateDiscountCode", "/changePassword", "/downloadFile/**", "/fileManager", "/uploadFile**"
-//                                , "/getFiles", "/createOrder", "/orders", "/myShelf", "/allOrders", "/order/**"
-//                                , "/sendCustomerData", "/getCustomerDataList", "/getDefaultCustomerData"
                         ).authenticated()
                         .requestMatchers(
                                 "/register", "/auth"
                                 , "/shop/**"
-//                                , "/sendMail"
                                 , "/articles/**"
                                 , "/mailTest"
                                 ,"/test/**"
